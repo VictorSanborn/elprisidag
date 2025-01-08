@@ -1,0 +1,8 @@
+{
+	"crons": [
+		{
+			"path": "/api/cron/dailyEuroPrice",
+			"schedule": "00 12 * * *"
+		}
+	]
+}
