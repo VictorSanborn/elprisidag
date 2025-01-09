@@ -12,12 +12,12 @@ export async function GET() {
 		const response = await fetch(url);
 		const data = await response.json();
 
-		await sql`INSERT INTO euroexchange("date", eurtosekprice)
+		let result  = await sql`INSERT INTO euroexchange("date", eurtosekprice)
               VALUES(${data.date}, ${data.rates.SEK});`;
+			  console.log(result);
+		return NextResponse.json({ ok: true });
 	};
 
 	const formattedDate = format(new Date(), 'yyyy-MM-dd');
-	fetchHistoricalRate(formattedDate);
-
-	return NextResponse.json({ ok: true });
+	fetchHistoricalRate(formattedDate);	
 }
