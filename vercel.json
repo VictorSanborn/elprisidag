@@ -2,7 +2,7 @@
 	"crons": [
 		{
 			"path": "/api/cron/dailyEuroPrice",
-			"schedule": "00 13 * * *"
+			"schedule": "00 12 * * *"
 		}
 	]
 }
