@@ -2,7 +2,23 @@
 	"crons": [
 		{
 			"path": "/api/cron/dailyEuroPrice",
-			"schedule": "00 12 * * *"
+			"schedule": "0 12 * * *"
+		},
+		{
+			"path": "/api/cron/dailyElectricPriceByHour?eic=10Y1001A1001A44P&day=tomorrow",
+			"schedule": "0 */1 * * *"
+		},
+		{
+			"path": "/api/cron/dailyElectricPriceByHour?eic=10Y1001A1001A45N&day=tomorrow",
+			"schedule": "0 */1 * * *"
+		},
+		{
+			"path": "/api/cron/dailyElectricPriceByHour?eic=10Y1001A1001A46L&day=tomorrow",
+			"schedule": "0 */1 * * *"
+		},
+		{
+			"path": "/api/cron/dailyElectricPriceByHour?eic=10Y1001A1001A47J&day=tomorrow",
+			"schedule": "0 */1 * * *"
 		}
 	]
 }

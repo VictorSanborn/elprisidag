@@ -1,4 +1,6 @@
 import { sql } from '@vercel/postgres';
+import { add, format, set } from 'date-fns';
+import { toZonedTime } from 'date-fns-tz';
 import { NextResponse } from 'next/server';
 import fetch from 'node-fetch';
 import { parseStringPromise } from 'xml2js';
@@ -6,7 +8,17 @@ import { parseStringPromise } from 'xml2js';
 import dotenv from 'dotenv';
 dotenv.config({ path: '../.env' });
 
-export async function GET() {
+export async function GET(req) {
+	const { searchParams } = new URL(req.url);
+	const EIC = searchParams.get('eic');
+	const day = searchParams.get('day');
+
+	// EIC-koder för de olika elområdena i Sverige
+	// SE1 Norra Sverige	10Y1001A1001A44P
+	// SE2 Norra Mellansverige	10Y1001A1001A45N
+	// SE3 Södra Mellansverige	10Y1001A1001A46L
+	// SE4 Södra Sverige	10Y1001A1001A47J
+
 	//TODO: https://transparencyplatform.zendesk.com/hc/en-us/articles/15692855254548-Sitemap-for-Restful-API-Integration
 	//TODO: https://transparencyplatform.zendesk.com/hc/en-us/articles/12845911031188-How-to-get-security-token
 	//TODO: https://chatgpt.com/c/67793d8a-ff90-8007-9020-4fcf80d0ec6d
@@ -27,7 +39,7 @@ export async function GET() {
 				periodEnd: endDate,
 			});
 
-			console.log(params.toString());
+			console.log(`${API_URL}?${params.toString()}`);
 
 			const response = await fetch(`${API_URL}?${params.toString()}`);
 			if (!response.ok) {
@@ -49,38 +61,63 @@ export async function GET() {
 					})),
 				})
 			);
+			console.log('prices', prices);
 
 			for (let i = 0; i < prices[0].price.length; i++) {
 				console.log('2', prices[0].price[i]);
+				console.log(`INSERT INTO electricdailyprice("date", eic, hour, price)
+				      VALUES(${dateOnly}, ${area}, ${prices[0].price[i].time}, ${prices[0].price[i].value});`);
+
 				await sql`INSERT INTO electricdailyprice("date", eic, hour, price)
 				      VALUES(${dateOnly}, ${area}, ${prices[0].price[i].time}, ${prices[0].price[i].value});`;
 			}
+			return { ok: true };
 		} catch (error) {
 			console.error('Kunde inte hämta elpriser:', error.message);
+			return { error: true, message: error.message };
 		}
 	}
 
-	const formatDate = (date) =>
-		date.toISOString().slice(0, 10).replace(/-/g, '') + '0000';
+	format(new Date(), 'yyyy-MM-dd');
+	const date = new Date();
+	//Add days
+	let startDate = add(date, { days: day == 'today' ? 0 : 1 }); //today or tomorrow based on the query
+	let endDate = startDate; //add(date, { days: 2 });
 
-	const formatDateNoTime = (date) =>
-		date.toISOString().slice(0, 10).replace(/-/g, '');
+	// Define the Sweden timezone
+	const swedenTimezone = 'Europe/Stockholm';
 
-	const today = formatDate(new Date(Date.now() + 86400000)); // Tomorrow at midnight UTC
-	const tomorrow = formatDate(new Date(Date.now() + 86400000 * 2)); // Add 24 hours to get day after
+	//Set the timezone to Sweden
+	startDate = toZonedTime(startDate, swedenTimezone);
+	endDate = toZonedTime(endDate, swedenTimezone);
 
-	console.log(today, tomorrow);
+	//Set Correct time
+	startDate = set(startDate, {
+		hours: 0,
+		minutes: 0,
+		seconds: 0,
+		milliseconds: 0,
+	});
+	endDate = set(endDate, {
+		hours: 23,
+		minutes: 59,
+		seconds: 0,
+		milliseconds: 0,
+	});
+
+	startDate = format(startDate, 'yyyyMMddHHmm', { timeZone: swedenTimezone });
+	endDate = format(endDate, 'yyyyMMddHHmm', { timeZone: swedenTimezone });
+
+	console.log(startDate, endDate);
 	// Hämta priser för SE1
-	fetchElectricityPrices(
-		formatDateNoTime(new Date()),
-		today,
-		tomorrow,
-		'10Y1001A1001A46L'
+	const respons = await fetchElectricityPrices(
+		format(add(date, { days: day == 'today' ? 0 : 1 }), 'yyyy-MM-dd', {
+			timeZone: swedenTimezone,
+		}),
+		startDate,
+		endDate,
+		EIC
 	);
-	// SE1	Norra Sverige	10Y1001A1001A44P
-	// SE2	Norra Mellansverige	10Y1001A1001A45N
-	// SE3	Södra Mellansverige	10Y1001A1001A46L
-	// SE4	Södra Sverige	10Y1001A1001A47J
 
-	return NextResponse.json({ ok: true });
+	return NextResponse.json(respons);
 }
