@@ -1,0 +1,52 @@
+.averagePriceExamples {
+	background-color: #f9f9f9;
+}
+.h3 {
+	padding: 16px 16px 0;
+}
+.gridContainer {
+	display: flex;
+	flex-wrap: wrap; /* Allows items to wrap to the next row */
+	gap: 16px; /* Spacing between grid items */
+	justify-content: center; /* Optional: Center grid items */
+	padding: 16px; /* Optional: Add padding to the grid */
+}
+
+.infoBox {
+	flex: 1 1 calc(33.333% - 32px); /* Flexible width: 1/3 of the container minus gaps */
+	box-sizing: border-box; /* Ensures padding/borders don't affect the box size */
+	padding: 16px;
+	background-color: #ffffff;
+	border: 1px solid #ddd;
+	border-radius: 8px;
+	text-align: left; /* Centers content inside each box */
+	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Optional: Subtle shadow for boxes */
+	position: relative;
+}
+
+.infoBox b {
+	font-size: 1.4rem;
+}
+
+.icon {
+	height: 40px;
+	padding-bottom: 10px;
+	padding-right: 10px;
+}
+.info {
+	display: inline-block;
+}
+.title {
+	color: #5c5c5c;
+}
+.calculation {
+	font-size: 0.8rem;
+	color: #aaaaaa;
+}
+
+/* mobile */
+@media (max-width: 800px) {
+	.infoBox {
+		flex: 1 1 calc(100% - 32px); /* Flexible width: 1/2 of the container minus gaps */
+	}
+}

@@ -1,0 +1,17 @@
+.average {
+	text-align: center;
+	color: #a8a8a8;
+}
+.average span {
+	font-size: 2rem;
+}
+
+.chart {
+	max-height: 500px;
+	height: auto;
+	min-height: 300px;
+}
+
+.info {
+	text-align: center;
+}
