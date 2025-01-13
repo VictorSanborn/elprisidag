@@ -79,8 +79,8 @@ export default function AveragePriceExamples(props: {
 			<h3 className={styles.h3}>Med priset {props.date} kostar:</h3>
 
 			<section className={styles.gridContainer}>
-				{examples.map((example) => (
-					<div className={styles.infoBox}>
+				{examples.map((example, index) => (
+					<div className={styles.infoBox} key={`price-example-${index}`}>
 						<FontAwesomeIcon icon={example.icon} className={styles.icon} />
 						<div className={styles.info}>
 							<p className={styles.title}>{example.title}</p>
