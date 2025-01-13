@@ -44,15 +44,21 @@ export default async function Home({
 					skatter är tillagda
 				</p>
 
-				<h3 className={styles.average}>
-					Nuvarande pris{' '}
-					<span>
-						{chartData.map((data) =>
-							data.hour == currentHour ? data.price.toFixed(2) : null
-						)}
-					</span>{' '}
-					SEK/kWh
-				</h3>
+				{chartData.length > 0 ? (
+					<h3 className={styles.average}>
+						Nuvarande pris{' '}
+						<span>
+							{chartData.map((data) =>
+								data.hour == currentHour ? data.price.toFixed(2) : null
+							)}
+						</span>{' '}
+						SEK/kWh
+					</h3>
+				) : (
+					<h2 className={styles.average}>
+						Nästa dags data kommer tidigast runt kl 13.
+					</h2>
+				)}
 
 				<p className={styles.info}>
 					Snittpris: <span>{averagePrice.toFixed(2)}</span> kr/kWh
