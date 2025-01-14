@@ -1,5 +1,5 @@
 import { sql } from '@vercel/postgres';
-import AveragePriceExamples from './components/averagePriceExamples/page';
+import AveragePriceExamples from './components/averagePriceExamples/averagePriceExamples';
 import PriceChart from './components/priceChart';
 import styles from './page.module.css';
 
@@ -8,7 +8,7 @@ export default async function Home({
 }: {
 	params: { area: string; date: string };
 }) {
-	const { area, date } = await params;
+	const { area, date } = params;
 
 	const today = new Date();
 	const currentHour = today.getHours();
@@ -26,6 +26,10 @@ export default async function Home({
 	const euroPrice = euroPriceResponse.rows[0]?.eurtosekprice;
 	const data =
 		await sql`SELECT * FROM electricdailyprice WHERE eic = ${area} AND date = ${date}`;
+	console.log(
+		`SELECT * FROM electricdailyprice WHERE eic = ${area} AND date = ${date}`
+	);
+
 	for (let i = 0; i < data.rows.length; i++) {
 		chartData.push({
 			hour: data.rows[i].hour,
@@ -66,7 +70,7 @@ export default async function Home({
 				<section className={styles.chart}>
 					<PriceChart dataSet={chartData} threshold={averagePrice} />
 				</section>
-				<AveragePriceExamples date={date} avaragePrice={averagePrice} />
+				<AveragePriceExamples dateToShow={date} averagePrice={averagePrice} />
 			</main>
 		</div>
 	);
