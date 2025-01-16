@@ -10,35 +10,29 @@ import {
 	Title,
 	Tooltip,
 } from 'chart.js';
-import React from 'react';
 import { Line } from 'react-chartjs-2';
 
-// Registrera Chart.js-komponenter
-ChartJS.register(
-	CategoryScale,
-	LinearScale,
-	LineElement,
-	PointElement,
-	Title,
-	Tooltip,
-	Legend
-);
-
-// Definiera typen för data
-interface DataPoint {
-	hour: string;
-	price: number;
-}
-
-interface SteppedLineChartProps {
-	dataSet: DataPoint[];
-	threshold: number;
-}
-
-const PriceChart: React.FC<SteppedLineChartProps> = ({
+export default function PriceChart({
 	dataSet,
 	threshold,
-}) => {
+}: {
+	dataSet: {
+		hour: number;
+		price: number;
+	}[];
+	threshold: number;
+}) {
+	// Registrera Chart.js-komponenter
+	ChartJS.register(
+		CategoryScale,
+		LinearScale,
+		LineElement,
+		PointElement,
+		Title,
+		Tooltip,
+		Legend
+	);
+
 	// Bearbeta datan
 	const labels = dataSet.map((item) => item.hour); // Exempel: ['08:00', '09:00', '10:00']
 	const prices = dataSet.map((item) => item.price); // Exempel: [30, 45, -10, 20]
@@ -96,6 +90,4 @@ const PriceChart: React.FC<SteppedLineChartProps> = ({
 	};
 
 	return <Line data={data} options={options} />;
-};
-
-export default PriceChart;
+}

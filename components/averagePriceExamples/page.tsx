@@ -11,7 +11,7 @@ import {
 	faUtensils,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import styles from './averagePriceExamples.module.css';
+import styles from './page.module.css';
 
 export default function AveragePriceExamples({
 	dateToShow,
