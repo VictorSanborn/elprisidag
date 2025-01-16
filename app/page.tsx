@@ -1,4 +1,5 @@
 import Image from 'next/image';
+import Link from 'next/link';
 import styles from './page.module.css';
 
 export default function Home() {
@@ -6,18 +7,18 @@ export default function Home() {
 		<div className={styles.page}>
 			<main className={styles.main}>
 				<section>
-					<a href='/elpris/e1/idag'>
+					<Link href='/elpris/e1/idag'>
 						<div className={styles.areaSelection}>E1</div>
-					</a>
-					<a href='/elpris/e2/idag'>
+					</Link>
+					<Link href='/elpris/e2/idag'>
 						<div className={styles.areaSelection}>E2</div>
-					</a>
-					<a href='/elpris/e3/idag'>
+					</Link>
+					<Link href='/elpris/e3/idag'>
 						<div className={styles.areaSelection}>E3</div>
-					</a>
-					<a href='/elpris/e4/idag'>
+					</Link>
+					<Link href='/elpris/e4/idag'>
 						<div className={styles.areaSelection}>E4</div>
-					</a>
+					</Link>
 				</section>
 			</main>
 			<footer className={styles.footer}>

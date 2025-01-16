@@ -1,4 +1,5 @@
 import { sql } from '@vercel/postgres';
+import Link from 'next/link';
 import AveragePriceExamples from '../../../../components/averagePriceExamples/page';
 import PriceChart from '../../../../components/priceChart';
 import styles from './page.module.css';
@@ -90,8 +91,7 @@ export default async function Home({
 				)}
 				<section>
 					<div className={styles.dateToggler}>
-						{' '}
-						<a
+						<Link
 							href={
 								date === 'idag'
 									? `/elpris/${area}/imorgon`
@@ -99,7 +99,7 @@ export default async function Home({
 							}
 						>
 							Visa priserna för {date === 'idag' ? 'imorgon' : 'idag'}
-						</a>
+						</Link>
 					</div>
 				</section>
 				<p className={styles.info}>
