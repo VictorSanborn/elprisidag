@@ -48,34 +48,14 @@ export default function PriceChart({
 				backgroundColor: 'rgba(192, 75, 186, 0.2)',
 				borderWidth: 2,
 				stepped: true as const, // Gör det till ett Stepped Line Chart
-				pointBorderColor: function (context: { dataIndex: number }) {
-					const index = context.dataIndex;
-
-					return prices.map(
-						(price) =>
-							price < threshold
-								? currentHour < index + 1
-									? 'rgb(44, 146, 44)'
-									: 'rgba(44, 146, 44, 0.47)'
-								: currentHour < index + 1
-								? 'rgb(155, 38, 38)'
-								: 'rgba(155, 38, 38, 0.35)' // Dynamic point fill color
-					);
-				},
-				pointBackgroundColor: function (context: { dataIndex: number }) {
-					const index = context.dataIndex;
-
-					return prices.map(
-						(price) =>
-							price < threshold
-								? currentHour < index + 1
-									? 'rgb(44, 146, 44)'
-									: 'rgba(44, 146, 44, 0.47)'
-								: currentHour < index + 1
-								? 'rgb(155, 38, 38)'
-								: 'rgba(155, 38, 38, 0.35)' // Dynamic point fill color
-					);
-				},
+				pointBorderColor: prices.map(
+					(price) =>
+						price < threshold ? 'rgb(44, 146, 44)' : 'rgb(155, 38, 38)' // Dynamic point border color
+				),
+				pointBackgroundColor: prices.map(
+					(price) =>
+						price < threshold ? 'rgb(44, 146, 44)' : 'rgb(155, 38, 38)' // Dynamic point fill color
+				),
 				pointRadius: function (context: { dataIndex: number }) {
 					const index = context.dataIndex;
 					return currentHour === index ? 8 : 3;
