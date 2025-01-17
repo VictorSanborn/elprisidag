@@ -7,17 +7,17 @@ export default function Home() {
 		<div className={styles.page}>
 			<main className={styles.main}>
 				<section>
-					<Link href='/elpris/e1/idag'>
-						<div className={styles.areaSelection}>E1</div>
+					<Link href='/elpris/se1/idag'>
+						<div className={styles.areaSelection}>SE1</div>
 					</Link>
-					<Link href='/elpris/e2/idag'>
-						<div className={styles.areaSelection}>E2</div>
+					<Link href='/elpris/se2/idag'>
+						<div className={styles.areaSelection}>SE2</div>
 					</Link>
-					<Link href='/elpris/e3/idag'>
-						<div className={styles.areaSelection}>E3</div>
+					<Link href='/elpris/se3/idag'>
+						<div className={styles.areaSelection}>SE3</div>
 					</Link>
-					<Link href='/elpris/e4/idag'>
-						<div className={styles.areaSelection}>E4</div>
+					<Link href='/elpris/se4/idag'>
+						<div className={styles.areaSelection}>SE4</div>
 					</Link>
 				</section>
 			</main>

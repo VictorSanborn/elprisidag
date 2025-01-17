@@ -25,7 +25,7 @@ export default function AveragePriceExamples({
 			icon: faCar,
 			title: 'Ladda elbilen',
 			price: (averagePrice * 40).toFixed(1),
-			calculation: 'ca 40 kwh',
+			calculation: 'ca 40 kWh',
 		},
 		{
 			icon: faShirt,
@@ -67,13 +67,13 @@ export default function AveragePriceExamples({
 			icon: faPersonShelter,
 			title: 'Elektriskt element/AC',
 			price: (averagePrice * 2).toFixed(1),
-			calculation: 'ca 2w (1 timme)',
+			calculation: 'ca 2kWh (1 timme)',
 		},
 		{
 			icon: faMugHot,
 			title: 'Brygga kaffe',
 			price: (averagePrice * 0.3).toFixed(1),
-			calculation: 'ca 0,3kwh för en kanna',
+			calculation: 'ca 0,3kWh för en kanna',
 		},
 	];
 

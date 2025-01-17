@@ -17,13 +17,13 @@ export default async function Home({
 	let areaToUse = '';
 	let dateToUse = date;
 
-	if (area === 'e1') {
+	if (area === 'se1') {
 		areaToUse = '10Y1001A1001A44P';
-	} else if (area === 'e2') {
+	} else if (area === 'se2') {
 		areaToUse = '10Y1001A1001A45N';
-	} else if (area === 'e3') {
+	} else if (area === 'se3') {
 		areaToUse = '10Y1001A1001A46L';
-	} else if (area === 'e4') {
+	} else if (area === 'se4') {
 		areaToUse = '10Y1001A1001A47J';
 	}
 
@@ -52,9 +52,17 @@ export default async function Home({
 	const euroPrice = euroPriceResponse.rows[0]?.eurtosekprice;
 	const data =
 		await sql`SELECT * FROM electricdailyprice WHERE eic = ${areaToUse} AND date = ${dateToUse}`;
-	console.log(
-		`SELECT * FROM electricdailyprice WHERE eic = ${areaToUse} AND date = ${dateToUse}`
-	);
+
+	const AveragePricePerPriceArea = async (eic: string): Promise<string> => {
+		const avgResponse =
+			await sql`SELECT AVG(price) AS average_price FROM electricdailyprice WHERE eic = ${eic} AND date = ${dateToUse};`;
+		return parseFloat(avgResponse.rows[0].average_price).toFixed(2);
+	};
+
+	const avgSE1 = await AveragePricePerPriceArea('10Y1001A1001A44P');
+	const avgSE2 = await AveragePricePerPriceArea('10Y1001A1001A45N');
+	const avgSE3 = await AveragePricePerPriceArea('10Y1001A1001A46L');
+	const avgSE4 = await AveragePricePerPriceArea('10Y1001A1001A47J');
 
 	for (let i = 0; i < data.rows.length; i++) {
 		chartData.push({
@@ -65,6 +73,18 @@ export default async function Home({
 
 	const averagePrice =
 		chartData.reduce((acc, item) => acc + item.price, 0) / chartData.length;
+
+	let maxPrice = -9990.99;
+	let minPrice = 9999.99;
+
+	for (let i = 0; i < chartData.length; i++) {
+		if (chartData[i].price > maxPrice) {
+			maxPrice = chartData[i].price;
+		}
+		if (chartData[i].price < minPrice) {
+			minPrice = chartData[i].price;
+		}
+	}
 
 	return (
 		<div className={styles.page}>
@@ -105,9 +125,37 @@ export default async function Home({
 				<p className={styles.info}>
 					Snittpris: <span>{averagePrice.toFixed(2)}</span> kr/kWh
 				</p>
+				<p>
+					Maxpris: <span>{maxPrice.toFixed(2)}</span> kr/kWh
+				</p>
+				<p>
+					Minpris: <span>{minPrice.toFixed(2)}</span> kr/kWh
+				</p>
+
 				<section className={styles.chart}>
-					<PriceChart dataSet={chartData} threshold={averagePrice} />
+					<PriceChart
+						dataSet={chartData}
+						threshold={averagePrice}
+						currentHour={currentHour}
+					/>
 				</section>
+
+				<section>
+					<div>
+						Snittpris SE1: <span>{avgSE1}</span>
+						kr/kWh
+					</div>
+					<div>
+						Snittpris SE2: <span>{avgSE2}</span> kr/kWh
+					</div>
+					<div>
+						Snittpris SE3: <span>{avgSE3}</span> kr/kWh
+					</div>
+					<div>
+						Snittpris SE4: <span>{avgSE4}</span> kr/kWh
+					</div>
+				</section>
+
 				<AveragePriceExamples dateToShow={date} averagePrice={averagePrice} />
 			</main>
 		</div>

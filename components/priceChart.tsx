@@ -15,12 +15,14 @@ import { Line } from 'react-chartjs-2';
 export default function PriceChart({
 	dataSet,
 	threshold,
+	currentHour,
 }: {
 	dataSet: {
 		hour: number;
 		price: number;
 	}[];
 	threshold: number;
+	currentHour: number;
 }) {
 	// Registrera Chart.js-komponenter
 	ChartJS.register(
@@ -34,7 +36,7 @@ export default function PriceChart({
 	);
 
 	// Bearbeta datan
-	const labels = dataSet.map((item) => item.hour); // Exempel: ['08:00', '09:00', '10:00']
+	const labels = dataSet.map((item) => item.hour - 1); // Exempel: ['08:00', '09:00', '10:00']
 	const prices = dataSet.map((item) => item.price); // Exempel: [30, 45, -10, 20]
 
 	// Data för diagrammet
@@ -46,15 +48,38 @@ export default function PriceChart({
 				backgroundColor: 'rgba(192, 75, 186, 0.2)',
 				borderWidth: 2,
 				stepped: true as const, // Gör det till ett Stepped Line Chart
-				pointBorderColor: prices.map(
-					(price) =>
-						price < threshold ? 'rgb(44, 146, 44)' : 'rgb(155, 38, 38)' // Dynamic point border color
-				),
-				pointBackgroundColor: prices.map(
-					(price) =>
-						price < threshold ? 'rgb(44, 146, 44)' : 'rgb(155, 38, 38)' // Dynamic point fill color
-				),
-				pointRadius: 5, // Optional: Adjust the size of the points
+				pointBorderColor: function (context: { dataIndex: number }) {
+					const index = context.dataIndex;
+
+					return prices.map(
+						(price) =>
+							price < threshold
+								? currentHour < index + 1
+									? 'rgb(44, 146, 44)'
+									: 'rgba(44, 146, 44, 0.47)'
+								: currentHour < index + 1
+								? 'rgb(155, 38, 38)'
+								: 'rgba(155, 38, 38, 0.35)' // Dynamic point fill color
+					);
+				},
+				pointBackgroundColor: function (context: { dataIndex: number }) {
+					const index = context.dataIndex;
+
+					return prices.map(
+						(price) =>
+							price < threshold
+								? currentHour < index + 1
+									? 'rgb(44, 146, 44)'
+									: 'rgba(44, 146, 44, 0.47)'
+								: currentHour < index + 1
+								? 'rgb(155, 38, 38)'
+								: 'rgba(155, 38, 38, 0.35)' // Dynamic point fill color
+					);
+				},
+				pointRadius: function (context: { dataIndex: number }) {
+					const index = context.dataIndex;
+					return currentHour === index ? 8 : 3;
+				},
 				pointHoverRadius: 7, // Optional: Larger radius on hover
 			},
 		],
