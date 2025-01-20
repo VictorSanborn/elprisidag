@@ -13,6 +13,13 @@ export async function GET(req) {
 	const EIC = searchParams.get('eic');
 	const day = searchParams.get('day');
 
+	if (!EIC) {
+		return NextResponse.json({ error: true, message: 'EIC is required' });
+	}
+	if (!day) {
+		return NextResponse.json({ error: true, message: 'day is required' });
+	}
+
 	// EIC-koder för de olika elområdena i Sverige
 	// SE1 Norra Sverige	10Y1001A1001A44P
 	// SE2 Norra Mellansverige	10Y1001A1001A45N
