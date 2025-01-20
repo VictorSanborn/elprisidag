@@ -1,0 +1,10 @@
+.header {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding: 1rem;
+}
+.title {
+	text-align: center;
+	color: rgb(201, 223, 255);
+}

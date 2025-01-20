@@ -1,6 +1,7 @@
 .average {
 	text-align: center;
-	color: #a8a8a8;
+	color: var(--main-two);
+	margin: 0 0 10px;
 }
 .average span {
 	font-size: 2rem;
@@ -10,10 +11,58 @@
 	height: 300px;
 	width: 1200px;
 	margin: 0 auto;
+	background-color: var();
+}
+
+.infoSection {
+	margin: 10px 0;
+	padding: 20px 0;
+}
+
+.prices {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 16px;
+	justify-content: center;
+	margin: 10px 0;
+}
+.infoBox {
+	flex: 1 1 calc(25% - 32px);
+	font-weight: bold;
+	color: var(--main-three);
+}
+.infoBox span {
+	font-size: 1.4rem;
+	color: var(--complementary-two);
+}
+.averagePrices {
+	text-align: center;
+	margin: 20px 0 0;
+}
+.averagePrices h3 {
+	color: var(--main-two);
+}
+
+.currentPrice {
+	color: var(--complementary-two);
 }
 
 .info {
 	text-align: center;
+	margin: 10px 0;
+	color: var(--main-three);
+}
+.info span {
+	font-size: 1.4rem;
+	color: var(--main-three);
+	font-weight: bold;
+}
+
+.prices {
+	display: flex;
+	justify-content: space-between;
+	max-width: 600px;
+	margin: 0 auto;
 }
 
 .dateToggler {
@@ -43,5 +92,9 @@
 
 	.dateToggler {
 		font-size: 1.2rem;
+	}
+
+	.infoBox {
+		flex: 1 1 calc(50% - 32px); /* Flexible width: 1/2 of the container minus gaps */
 	}
 }

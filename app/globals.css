@@ -1,6 +1,12 @@
 :root {
 	--background: #ffffff;
 	--foreground: #171717;
+
+	--main-one: #8ecae6;
+	--main-two: #219ebc;
+	--main-three: #023047;
+	--complementary-one: #ffb703;
+	--complementary-two: #fb8500;
 }
 
 @media (prefers-color-scheme: dark) {
