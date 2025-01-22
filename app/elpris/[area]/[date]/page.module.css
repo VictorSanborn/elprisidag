@@ -16,31 +16,15 @@
 
 .infoSection {
 	margin: 10px 0;
-	padding: 20px 0;
 }
 
-.prices {
-	display: flex;
-	flex-wrap: wrap;
-	gap: 16px;
-	justify-content: center;
-	margin: 10px 0;
-}
-.infoBox {
-	flex: 1 1 calc(25% - 32px);
-	font-weight: bold;
-	color: var(--main-three);
-}
-.infoBox span {
-	font-size: 1.4rem;
-	color: var(--complementary-two);
-}
 .averagePrices {
 	text-align: center;
-	margin: 20px 0 0;
+	margin: 30px 0 20px;
 }
 .averagePrices h3 {
 	color: var(--main-two);
+	margin: 0 0 10px;
 }
 
 .currentPrice {
@@ -60,15 +44,22 @@
 
 .prices {
 	display: flex;
-	justify-content: space-between;
-	max-width: 600px;
-	margin: 0 auto;
+	flex-wrap: wrap;
+	gap: 36px;
+	justify-content: center;
+	margin: 10px 0;
+}
+.infoBox {
+	font-weight: bold;
+	color: var(--main-three);
+}
+.infoBox span {
+	font-size: 1.4rem;
+	color: var(--complementary-two);
 }
 
-.dateToggler {
-	font-size: 1.4rem;
-	text-align: center;
-	border: 2px solid #000;
+.dateTogglerDay:hover {
+	background-color: var(--main-two);
 }
 
 /* Tablet */

@@ -1,0 +1,13 @@
+.dateToggler {
+	text-align: center;
+	display: block;
+}
+
+.dateTogglerDay {
+	font-size: 1.1rem;
+	background-color: var(--main-one);
+	color: white;
+	display: inline;
+	padding: 10px;
+	border-radius: 0.5rem;
+}

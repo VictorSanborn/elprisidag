@@ -1,6 +1,5 @@
+import DayToShowToggler from '@/components/DayToShowToggler/page';
 import { sql } from '@vercel/postgres';
-import Link from 'next/link';
-import AveragePriceExamples from '../../../../components/averagePriceExamples/page';
 import PriceChart from '../../../../components/priceChart';
 import styles from './page.module.css';
 
@@ -93,38 +92,39 @@ export default async function Home({
 			<main className={styles.main}>
 				{chartData.length > 0 ? (
 					<section>
-						<section>
-							<div className={styles.dateToggler}>
-								<Link
-									href={
-										date === 'idag'
-											? `/elpris/${area}/imorgon`
-											: `/elpris/${area}/idag`
-									}
-								>
-									Visa priserna för {date === 'idag' ? 'imorgon' : 'idag'}
-								</Link>
-							</div>
-						</section>
+						<DayToShowToggler date={date} area={area} />
+						<p className={styles.info}>{dateToUse}</p>
 						<section className={styles.infoSection}>
-							<h3 className={styles.average}>
-								{dateToUse} Nuvarande pris{' '}
-								<span className={styles.currentPrice}>
-									{chartData.map((data) =>
-										data.hour == currentHour ? data.price.toFixed(2) : null
-									)}
-								</span>{' '}
-								SEK/kWh
-							</h3>
+							{date === 'idag' ? (
+								<h3 className={styles.average}>
+									<br />
+									Nuvarande pris{' '}
+									<span className={styles.currentPrice}>
+										{chartData.map((data) =>
+											data.hour == currentHour ? data.price.toFixed(2) : null
+										)}
+									</span>{' '}
+									SEK/kWh
+								</h3>
+							) : (
+								<></>
+							)}
+
 							<section className={styles.prices}>
 								<p className={styles.info}>
-									Snittpris: <span>{averagePrice.toFixed(2)}</span> kr/kWh
+									Snittpris
+									<br />
+									<span>{averagePrice.toFixed(2)}</span> kr/kWh
 								</p>
 								<p className={styles.info}>
-									Maxpris: <span>{maxPrice.toFixed(2)}</span> kr/kWh
+									Maxpris
+									<br />
+									<span>{maxPrice.toFixed(2)}</span> kr/kWh
 								</p>
 								<p className={styles.info}>
-									Minpris: <span>{minPrice.toFixed(2)}</span> kr/kWh
+									Minpris
+									<br />
+									<span>{minPrice.toFixed(2)}</span> kr/kWh
 								</p>
 							</section>
 
@@ -138,17 +138,17 @@ export default async function Home({
 								dataSet={chartData}
 								threshold={averagePrice}
 								currentHour={currentHour}
+								showCurrentHour={date === 'idag'}
 							/>
 						</section>
 
 						<section className={styles.averagePrices}>
-							<h3>Dagens snitt i olika områden</h3>
+							<h3>Dygns Snitt För:</h3>
 							<span className={styles.prices}>
 								<div className={styles.infoBox}>
 									SE1
 									<br />
-									<span>{avgSE1}</span>
-									kr/kWh
+									<span>{avgSE1}</span> kr/kWh
 								</div>
 								<div className={styles.infoBox}>
 									SE2
@@ -168,10 +168,10 @@ export default async function Home({
 							</span>
 						</section>
 
-						<AveragePriceExamples
+						{/* <AveragePriceExamples
 							dateToShow={date}
 							averagePrice={averagePrice}
-						/>
+						/> */}
 					</section>
 				) : (
 					<h2 className={styles.average}>

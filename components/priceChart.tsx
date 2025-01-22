@@ -16,6 +16,7 @@ export default function PriceChart({
 	dataSet,
 	threshold,
 	currentHour,
+	showCurrentHour,
 }: {
 	dataSet: {
 		hour: number;
@@ -23,6 +24,7 @@ export default function PriceChart({
 	}[];
 	threshold: number;
 	currentHour: number;
+	showCurrentHour: boolean;
 }) {
 	// Registrera Chart.js-komponenter
 	ChartJS.register(
@@ -58,7 +60,7 @@ export default function PriceChart({
 				),
 				pointRadius: function (context: { dataIndex: number }) {
 					const index = context.dataIndex;
-					return currentHour === index ? 8 : 3;
+					return currentHour === index && showCurrentHour ? 8 : 3;
 				},
 				pointHoverRadius: 7, // Optional: Larger radius on hover
 			},
