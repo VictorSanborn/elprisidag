@@ -9,13 +9,6 @@
 	--complementary-two: #fb8500;
 }
 
-@media (prefers-color-scheme: dark) {
-	:root {
-		--background: #0a0a0a;
-		--foreground: #ededed;
-	}
-}
-
 @font-face {
 	font-family: 'Lato-Regular';
 	src: url('/fonts/Lato-Regular.ttf') format('truetype');
