@@ -4,7 +4,27 @@
 	align-items: center;
 	padding: 1rem;
 }
+
+.logo {
+	font-size: 1.2rem;
+	position: relative;
+}
+
+.icon {
+	position: absolute;
+	top: -10px;
+	left: -10px;
+	transform: rotate(20deg);
+	font-size: 50px;
+	z-index: 1;
+	color: var(--main-two);
+}
+
 .title {
+	position: relative;
+	color: var(--complementary-one);
 	text-align: center;
-	color: rgb(201, 223, 255);
+	font-family: var(--header-font);
+	font-weight: 100;
+	z-index: 2;
 }

@@ -1,0 +1,48 @@
+.footer {
+	display: flex;
+	justify-content: space-between;
+	padding: 1rem;
+	background: var(--main-three);
+	min-height: 300px;
+	padding-top: 40px;
+}
+
+.logo {
+	font-size: 2rem;
+	position: relative;
+}
+
+.icon {
+	position: absolute;
+	top: -30px;
+	left: -10px;
+	transform: rotate(20deg);
+	font-size: 100px;
+	z-index: 1;
+}
+
+.title {
+	position: relative;
+	color: var(--complementary-one);
+	text-align: center;
+	font-family: var(--header-font);
+	font-weight: 100;
+	z-index: 2;
+}
+
+/* mobile */
+@media (max-width: 768px) {
+	.logo {
+		font-size: 1.2rem;
+		position: relative;
+	}
+
+	.icon {
+		position: absolute;
+		top: -20px;
+		right: -20px;
+		transform: rotate(20deg);
+		font-size: 4rem;
+		z-index: 1;
+	}
+}

@@ -90,9 +90,9 @@ export default async function Home({
 	return (
 		<div className={styles.page}>
 			<main className={styles.main}>
+				<DayToShowToggler date={date} area={area} />
 				{chartData.length > 0 ? (
 					<section>
-						<DayToShowToggler date={date} area={area} />
 						<p className={styles.info}>{dateToUse}</p>
 						<section className={styles.infoSection}>
 							{date === 'idag' ? (
@@ -112,11 +112,6 @@ export default async function Home({
 
 							<section className={styles.prices}>
 								<p className={styles.info}>
-									Snittpris
-									<br />
-									<span>{averagePrice.toFixed(2)}</span> kr/kWh
-								</p>
-								<p className={styles.info}>
 									Maxpris
 									<br />
 									<span>{maxPrice.toFixed(2)}</span> kr/kWh
@@ -125,6 +120,11 @@ export default async function Home({
 									Minpris
 									<br />
 									<span>{minPrice.toFixed(2)}</span> kr/kWh
+								</p>
+								<p className={styles.info}>
+									Snittpris
+									<br />
+									<span>{averagePrice.toFixed(2)}</span> kr/kWh
 								</p>
 							</section>
 
@@ -174,7 +174,7 @@ export default async function Home({
 						/> */}
 					</section>
 				) : (
-					<h2 className={styles.average}>
+					<h2 className={styles.noData}>
 						Nästa dags data kommer tidigast runt kl 13.
 					</h2>
 				)}
