@@ -86,7 +86,7 @@ export default function PriceChart({
 							parseInt(context[0].label, 10) + 1
 						}:00`;
 					},
-					label: function (context: { raw: number }) {
+					label: function (context: any) {
 						// Lägg till "kr" efter värdet
 						return `${context.raw.toFixed(2)} kr/kWh`;
 					},
