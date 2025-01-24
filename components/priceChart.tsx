@@ -60,7 +60,7 @@ export default function PriceChart({
 				),
 				pointRadius: function (context: { dataIndex: number }) {
 					const index = context.dataIndex;
-					return currentHour === index && showCurrentHour ? 8 : 3;
+					return currentHour + 1 === index && showCurrentHour ? 8 : 3;
 				},
 				pointHoverRadius: 7, // Optional: Larger radius on hover
 			},
