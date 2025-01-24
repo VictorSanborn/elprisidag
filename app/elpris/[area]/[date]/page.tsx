@@ -101,7 +101,7 @@ export default async function Home({
 									Nuvarande pris{' '}
 									<span className={styles.currentPrice}>
 										{chartData.map((data, index) =>
-											index + 1 == currentHour ? data.price.toFixed(2) : null
+											currentHour + 1 == index ? data.price.toFixed(2) : null
 										)}
 									</span>{' '}
 									SEK/kWh
