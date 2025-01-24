@@ -77,7 +77,20 @@ export default function PriceChart({
 			},
 			title: {
 				display: false,
-				text: 'Stepped Line Chart Example',
+			},
+			tooltip: {
+				callbacks: {
+					title: function (context: { label: string }[]) {
+						// Visa timmen i tooltipen
+						return `kl ${parseInt(context[0].label, 10)}:00 - ${
+							parseInt(context[0].label, 10) + 1
+						}:00`;
+					},
+					label: function (context: { raw: number }) {
+						// Lägg till "kr" efter värdet
+						return `${context.raw.toFixed(2)} kr/kWh`;
+					},
+				},
 			},
 		},
 
