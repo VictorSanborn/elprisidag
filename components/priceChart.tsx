@@ -9,6 +9,7 @@ import {
 	PointElement,
 	Title,
 	Tooltip,
+	TooltipItem,
 } from 'chart.js';
 import { Line } from 'react-chartjs-2';
 
@@ -80,15 +81,16 @@ export default function PriceChart({
 			},
 			tooltip: {
 				callbacks: {
-					title: function (context: { label: string }[]) {
+					title: function (context: TooltipItem<'line'>[]) {
 						// Visa timmen i tooltipen
-						return `kl ${parseInt(context[0].label, 10)}:00 - ${
-							parseInt(context[0].label, 10) + 1
+						const value = context[0].label as string;
+						return `kl ${parseInt(value, 10)}:00 - ${
+							parseInt(value, 10) + 1
 						}:00`;
 					},
-					label: function (context: any) {
-						// Lägg till "kr" efter värdet
-						return `${context.raw.toFixed(2)} kr/kWh`;
+					label: function (context: TooltipItem<'line'>) {
+						const value = context.raw as number;
+						return `${value.toFixed(2)} kr/kWh`;
 					},
 				},
 			},
