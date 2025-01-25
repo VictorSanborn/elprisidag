@@ -22,7 +22,7 @@ const SwedenMap = () => {
 			style={{
 				width: '100%',
 				height: 'auto',
-				maxWidth: '600px', // Optional: restrict maximum width
+				maxWidth: '300px', // Optional: restrict maximum width
 				display: 'block', // Optional: prevent inline SVG spacing issues
 				margin: '0 auto', // Center the SVG on the page
 			}}
