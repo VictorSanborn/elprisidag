@@ -3,6 +3,7 @@
 import DifferentElectricalAgreements from '@/components/InfoTexts/DifferentElectricalAgreements/page';
 import ElectricAreaInfo from '@/components/InfoTexts/ElectricAreaInfo/page';
 import HowToSetTheSpotPrice from '@/components/InfoTexts/HowToSetTheSpotPrice/page';
+import WhatIsMyElectricalBillASumOf from '@/components/InfoTexts/WhatIsMyElectricalBillASumOf/page';
 import ElomradeKarta from '@/components/swedenMap/page';
 import styles from './page.module.css';
 
@@ -16,6 +17,7 @@ export default function Home() {
 				<ElectricAreaInfo />
 				<HowToSetTheSpotPrice />
 				<DifferentElectricalAgreements />
+				<WhatIsMyElectricalBillASumOf />
 			</main>
 		</div>
 	);
