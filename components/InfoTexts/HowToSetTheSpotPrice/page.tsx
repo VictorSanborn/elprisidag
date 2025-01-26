@@ -8,7 +8,7 @@ export default function HowToSetTheSpotPrice() {
 			Elpriset i de fyra elområdena (SE1–SE4) bestäms på den nordiska elbörsen
 			Nord Pool. Priset avgörs av kostnaden för att producera den sista
 			kilowattimmen (kWh) som behövs för att möta efterfrågan. Detta så kallade
-			"spotpris" gäller för hela den aktuella timmen.
+			spotpris gäller för hela den aktuella timmen.
 			<br />
 			<br />
 			Elproducenter börjar med de billigaste produktionssätten, som vindkraft,

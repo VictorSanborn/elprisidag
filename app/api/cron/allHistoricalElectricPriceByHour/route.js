@@ -10,7 +10,7 @@ dotenv.config({ path: '../.env' });
 
 // Example : http://localhost:3000/api/cron/historicalElectricPriceByHour?eic=10Y1001A1001A47J&date=2025-01-09
 
-export async function GET(req) {
+export async function GET() {
 	// EIC-koder för de olika elområdena i Sverige
 	// SE1 Norra Sverige	10Y1001A1001A44P
 	// SE2 Norra Mellansverige	10Y1001A1001A45N
@@ -32,7 +32,7 @@ export async function GET(req) {
 		EIC
 	) {
 		// Hämta priser för SE1
-		const respons = await fetchElectricityPrices(
+		await fetchElectricityPrices(
 			formatedDate,
 			formatedStartDate,
 			formatedEndDate,
@@ -92,8 +92,8 @@ export async function GET(req) {
 		}
 	}
 
-	const startDate = new Date('2025-01-09');
-	const endDate = new Date('2018-01-03');
+	const startDate = new Date('2018-01-03');
+	const endDate = new Date('2018-01-02');
 
 	const dates = [];
 	let currentDate = startDate;

@@ -14,6 +14,17 @@ export default function Footer() {
 					</div>
 				</var>
 			</Link>
+			<section>
+				<Link href='/terms-of-use' className={styles.links}>
+					Terms of use
+				</Link>
+				<Link href='/cookiepolicy' className={styles.links}>
+					Cookiepolicy
+				</Link>
+				<Link href='/integritetspolicy' className={styles.links}>
+					Integritetspolicy
+				</Link>
+			</section>
 		</footer>
 	);
 }

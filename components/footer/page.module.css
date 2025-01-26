@@ -5,6 +5,7 @@
 	background: var(--main-three);
 	min-height: 300px;
 	padding-top: 40px;
+	margin-top: 40px;
 }
 
 .logo {
@@ -28,6 +29,17 @@
 	font-family: var(--header-font);
 	font-weight: 100;
 	z-index: 2;
+}
+
+.links {
+	display: flex;
+	justify-content: space-between;
+	color: var(--main-one);
+	font-size: 1.1rem;
+}
+
+.links:hover {
+	color: var(--main-two);
 }
 
 /* mobile */

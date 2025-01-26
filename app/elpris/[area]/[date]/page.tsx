@@ -167,11 +167,6 @@ export default async function Home({
 								</div>
 							</span>
 						</section>
-
-						{/* <AveragePriceExamples
-							dateToShow={date}
-							averagePrice={averagePrice}
-						/> */}
 					</section>
 				) : (
 					<h2 className={styles.noData}>
