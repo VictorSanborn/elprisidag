@@ -2,7 +2,7 @@
 	"crons": [
 		{
 			"path": "/api/cron/dailyEuroPrice",
-			"schedule": "0 12 * * *"
+			"schedule": "0 03 * * *"
 		},
 		{
 			"path": "/api/cron/dailyElectricPriceByHour?eic=10Y1001A1001A44P&day=tomorrow",

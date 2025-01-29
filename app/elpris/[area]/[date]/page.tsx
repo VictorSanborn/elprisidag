@@ -13,17 +13,17 @@ export default async function Home({
 	const today = new Date();
 	const currentHour = today.getHours();
 
-	let areaToUse = '';
+	let eic = '';
 	let dateToUse = date;
 
 	if (area === 'se1') {
-		areaToUse = '10Y1001A1001A44P';
+		eic = '10Y1001A1001A44P';
 	} else if (area === 'se2') {
-		areaToUse = '10Y1001A1001A45N';
+		eic = '10Y1001A1001A45N';
 	} else if (area === 'se3') {
-		areaToUse = '10Y1001A1001A46L';
+		eic = '10Y1001A1001A46L';
 	} else if (area === 'se4') {
-		areaToUse = '10Y1001A1001A47J';
+		eic = '10Y1001A1001A47J';
 	}
 
 	if (date === 'idag') {
@@ -39,7 +39,7 @@ export default async function Home({
 	}
 
 	// Om klockan är före 12:00, sätt datumet till igår
-	if (currentHour < 12 || date === 'imorgon') {
+	if (currentHour < 4 || date === 'imorgon') {
 		today.setDate(today.getDate() - 1); // Sätt datumet till igår
 	}
 
@@ -49,22 +49,86 @@ export default async function Home({
 	const euroPriceResponse =
 		await sql`SELECT * FROM euroexchange WHERE date = ${queryDate}`;
 	const euroPrice = euroPriceResponse.rows[0]?.eurtosekprice;
+
+	// Hämta data för valt datum
 	const data =
-		await sql`SELECT * FROM electricdailyprice WHERE eic = ${areaToUse} AND date = ${dateToUse}`;
+		await sql`SELECT * FROM electricdailyprice WHERE eic = ${eic} AND date = ${dateToUse}`;
 
-	const AveragePricePerPriceArea = async (eic: string): Promise<string> => {
+	// Hämta data för dagen innan
+	const yesterday = new Date(dateToUse);
+	yesterday.setDate(yesterday.getDate() - 1);
+	const yesterdayDateToUse = yesterday.toISOString().split('T')[0];
+
+	const yesterdayEuroPriceResponse =
+		await sql`SELECT * FROM euroexchange WHERE date = ${yesterdayDateToUse}`;
+	const yesterdayEuroPrice = yesterdayEuroPriceResponse.rows[0]?.eurtosekprice;
+
+	console.log('yesterdayDateToUse', yesterdayDateToUse, yesterdayEuroPrice);
+
+	const AveragePricePerPriceArea = async (
+		eic: string,
+		daysEuroPrice: number,
+		date: string
+	): Promise<string> => {
 		const avgResponse =
-			await sql`SELECT AVG(price) AS average_price FROM electricdailyprice WHERE eic = ${eic} AND date = ${dateToUse};`;
+			await sql`SELECT AVG(price) AS average_price FROM electricdailyprice WHERE eic = ${eic} AND date = ${date};`;
 
-		const priceAvg = (avgResponse.rows[0]?.average_price * euroPrice) / 1000;
+		console.log(
+			'avgResponse',
+			avgResponse.rows[0]?.average_price,
+			daysEuroPrice
+		);
+
+		const priceAvg =
+			(avgResponse.rows[0]?.average_price * daysEuroPrice) / 1000;
 		return priceAvg.toFixed(2);
 	};
 
-	const avgSE1 = await AveragePricePerPriceArea('10Y1001A1001A44P');
-	const avgSE2 = await AveragePricePerPriceArea('10Y1001A1001A45N');
-	const avgSE3 = await AveragePricePerPriceArea('10Y1001A1001A46L');
-	const avgSE4 = await AveragePricePerPriceArea('10Y1001A1001A47J');
+	//Todays average price
+	const avgSE1 = await AveragePricePerPriceArea(
+		'10Y1001A1001A44P',
+		euroPrice,
+		dateToUse
+	);
+	const avgSE2 = await AveragePricePerPriceArea(
+		'10Y1001A1001A45N',
+		euroPrice,
+		dateToUse
+	);
+	const avgSE3 = await AveragePricePerPriceArea(
+		'10Y1001A1001A46L',
+		euroPrice,
+		dateToUse
+	);
+	const avgSE4 = await AveragePricePerPriceArea(
+		'10Y1001A1001A47J',
+		euroPrice,
+		dateToUse
+	);
 
+	//TODO: Add yesterdays average price to sumerize the day att bottom prices
+	const yesterdayAvgSE1 = await AveragePricePerPriceArea(
+		'10Y1001A1001A44P',
+		yesterdayEuroPrice,
+		yesterdayDateToUse
+	);
+	const yesterdayAvgSE2 = await AveragePricePerPriceArea(
+		'10Y1001A1001A45N',
+		yesterdayEuroPrice,
+		yesterdayDateToUse
+	);
+	const yesterdayAvgSE3 = await AveragePricePerPriceArea(
+		'10Y1001A1001A46L',
+		yesterdayEuroPrice,
+		yesterdayDateToUse
+	);
+	const yesterdayAvgSE4 = await AveragePricePerPriceArea(
+		'10Y1001A1001A47J',
+		yesterdayEuroPrice,
+		yesterdayDateToUse
+	);
+
+	//Insert data for chart
 	for (let i = 0; i < data.rows.length; i++) {
 		chartData.push({
 			hour: data.rows[i].hour,
@@ -72,9 +136,7 @@ export default async function Home({
 		});
 	}
 
-	const averagePrice =
-		chartData.reduce((acc, item) => acc + item.price, 0) / chartData.length;
-
+	//Find max and min price
 	let maxPrice = -9990.99;
 	let minPrice = 9999.99;
 
@@ -124,7 +186,13 @@ export default async function Home({
 								<p className={styles.info}>
 									Snittpris
 									<br />
-									<span>{averagePrice.toFixed(2)}</span> kr/kWh
+									<span>
+										{area == 'se1' ? avgSE1 : null}
+										{area == 'se2' ? avgSE2 : null}
+										{area == 'se3' ? avgSE3 : null}
+										{area == 'se4' ? avgSE4 : null}
+									</span>{' '}
+									kr/kWh
 								</p>
 							</section>
 
@@ -136,7 +204,15 @@ export default async function Home({
 						<section className={styles.chart}>
 							<PriceChart
 								dataSet={chartData}
-								threshold={averagePrice}
+								threshold={
+									area == 'se1'
+										? parseFloat(avgSE1)
+										: area == 'se2'
+										? parseFloat(avgSE2)
+										: area == 'se3'
+										? parseFloat(avgSE3)
+										: parseFloat(avgSE4)
+								}
 								currentHour={currentHour}
 								showCurrentHour={date === 'idag'}
 							/>
@@ -148,22 +224,34 @@ export default async function Home({
 								<div className={styles.infoBox}>
 									SE1
 									<br />
-									<span>{avgSE1}</span> kr/kWh
+									<div className={styles.notSelectedDay}>
+										{yesterdayAvgSE1} kr/kWh
+									</div>
+									<span className={styles.selectedDay}>{avgSE1}</span> kr/kWh
 								</div>
 								<div className={styles.infoBox}>
 									SE2
 									<br />
-									<span>{avgSE2}</span> kr/kWh
+									<div className={styles.notSelectedDay}>
+										{yesterdayAvgSE2} kr/kWh
+									</div>
+									<span className={styles.selectedDay}>{avgSE2}</span> kr/kWh
 								</div>
 								<div className={styles.infoBox}>
 									SE3
 									<br />
-									<span>{avgSE3}</span> kr/kWh
+									<div className={styles.notSelectedDay}>
+										{yesterdayAvgSE3} kr/kWh
+									</div>
+									<span className={styles.selectedDay}>{avgSE3}</span> kr/kWh
 								</div>
 								<div className={styles.infoBox}>
 									SE4
 									<br />
-									<span>{avgSE4}</span> kr/kWh
+									<div className={styles.notSelectedDay}>
+										{yesterdayAvgSE4} kr/kWh
+									</div>
+									<span className={styles.selectedDay}>{avgSE4}</span> kr/kWh
 								</div>
 							</span>
 						</section>
