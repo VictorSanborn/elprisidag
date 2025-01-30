@@ -27,6 +27,11 @@ export default function RootLayout({
 					data-domain='dagensel.se'
 					src='https://plausible.io/js/script.js'
 				></script>
+				<script
+					async
+					src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1680585113300345'
+					crossOrigin='anonymous'
+				></script>
 			</head>
 			<body className={`${geistSans.variable} ${geistMono.variable}`}>
 				<Header />

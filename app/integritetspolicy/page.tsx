@@ -78,6 +78,21 @@ export default function Integritetspolicy() {
 					personuppgifter mot obehörig åtkomst, förlust eller missbruk.
 				</p>
 			</section>
+
+			<section>
+				<h3>6. Verktyg</h3>
+				<p>
+					Vi använder verktygen:
+					<ul>
+						<li>
+							<b>Plausible</b> för att få in webbplatsstatistik för att hjälpa
+							oss att förstå hur sidan används. Vi valde Plausible framför
+							andra, då de inte samlar in några personuppgifter om dig som
+							användare. Win win!
+						</li>
+					</ul>
+				</p>
+			</section>
 		</section>
 	);
 }
