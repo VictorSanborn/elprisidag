@@ -1,3 +1,4 @@
+import DayAreaPriceAverages from '@/components/DayAreaPriceAverages/page';
 import DayToShowToggler from '@/components/DayToShowToggler/page';
 import { sql } from '@vercel/postgres';
 import PriceChart from '../../../../components/priceChart';
@@ -11,6 +12,7 @@ export default async function Home({
 	const { area, date } = await params;
 
 	const today = new Date();
+	let tomorrow = null;
 	const currentHour = today.getHours();
 
 	let eic = '';
@@ -38,9 +40,15 @@ export default async function Home({
 		//Datum är antaglien i formatet YYYY-MM-DD, använd det datumet
 	}
 
-	// Om klockan är före 12:00, sätt datumet till igår
+	// Om klockan är före 04:00, sätt datumet till igår
 	if (currentHour < 4 || date === 'imorgon') {
 		today.setDate(today.getDate() - 1); // Sätt datumet till igår
+	}
+
+	if (currentHour > 13) {
+		tomorrow = new Date();
+		tomorrow.setDate(tomorrow.getDate() + 1); // Sätt datumet till imorgon
+		tomorrow = tomorrow.toISOString().split('T')[0];
 	}
 
 	const queryDate = today.toISOString().split('T')[0]; // Format YYYY-MM-DD
@@ -106,7 +114,7 @@ export default async function Home({
 		dateToUse
 	);
 
-	//TODO: Add yesterdays average price to sumerize the day att bottom prices
+	//Yesterdays avaerage price
 	const yesterdayAvgSE1 = await AveragePricePerPriceArea(
 		'10Y1001A1001A44P',
 		yesterdayEuroPrice,
@@ -127,6 +135,34 @@ export default async function Home({
 		yesterdayEuroPrice,
 		yesterdayDateToUse
 	);
+
+	//Tomomrrow's average price (if time after 13:00)
+	let tomorrowAvgSE1 = null;
+	let tomorrowAvgSE2 = null;
+	let tomorrowAvgSE3 = null;
+	let tomorrowAvgSE4 = null;
+	if (tomorrow) {
+		tomorrowAvgSE1 = await AveragePricePerPriceArea(
+			'10Y1001A1001A44P',
+			euroPrice,
+			dateToUse
+		);
+		tomorrowAvgSE2 = await AveragePricePerPriceArea(
+			'10Y1001A1001A45N',
+			euroPrice,
+			dateToUse
+		);
+		tomorrowAvgSE3 = await AveragePricePerPriceArea(
+			'10Y1001A1001A46L',
+			euroPrice,
+			dateToUse
+		);
+		tomorrowAvgSE4 = await AveragePricePerPriceArea(
+			'10Y1001A1001A47J',
+			euroPrice,
+			dateToUse
+		);
+	}
 
 	//Insert data for chart
 	for (let i = 0; i < data.rows.length; i++) {
@@ -217,44 +253,20 @@ export default async function Home({
 								showCurrentHour={date === 'idag'}
 							/>
 						</section>
-
-						<section className={styles.averagePrices}>
-							<h3>Dygns Snitt För:</h3>
-							<span className={styles.prices}>
-								<div className={styles.infoBox}>
-									SE1
-									<br />
-									<div className={styles.notSelectedDay}>
-										{yesterdayAvgSE1} kr/kWh
-									</div>
-									<span className={styles.selectedDay}>{avgSE1}</span> kr/kWh
-								</div>
-								<div className={styles.infoBox}>
-									SE2
-									<br />
-									<div className={styles.notSelectedDay}>
-										{yesterdayAvgSE2} kr/kWh
-									</div>
-									<span className={styles.selectedDay}>{avgSE2}</span> kr/kWh
-								</div>
-								<div className={styles.infoBox}>
-									SE3
-									<br />
-									<div className={styles.notSelectedDay}>
-										{yesterdayAvgSE3} kr/kWh
-									</div>
-									<span className={styles.selectedDay}>{avgSE3}</span> kr/kWh
-								</div>
-								<div className={styles.infoBox}>
-									SE4
-									<br />
-									<div className={styles.notSelectedDay}>
-										{yesterdayAvgSE4} kr/kWh
-									</div>
-									<span className={styles.selectedDay}>{avgSE4}</span> kr/kWh
-								</div>
-							</span>
-						</section>
+						<DayAreaPriceAverages
+							yesterdayAvgSE1={yesterdayAvgSE1}
+							yesterdayAvgSE2={yesterdayAvgSE2}
+							yesterdayAvgSE3={yesterdayAvgSE3}
+							yesterdayAvgSE4={yesterdayAvgSE4}
+							avgSE1={avgSE1}
+							avgSE2={avgSE2}
+							avgSE3={avgSE3}
+							avgSE4={avgSE4}
+							tomorrowAvgSE1={tomorrowAvgSE1 ? tomorrowAvgSE1 : ''}
+							tomorrowAvgSE2={tomorrowAvgSE2 ? tomorrowAvgSE2 : ''}
+							tomorrowAvgSE3={tomorrowAvgSE3 ? tomorrowAvgSE3 : ''}
+							tomorrowAvgSE4={tomorrowAvgSE4 ? tomorrowAvgSE4 : ''}
+						/>
 					</section>
 				) : (
 					<h2 className={styles.noData}>
